@@ -8,31 +8,35 @@ document.querySelector('.score').textContent = 10;
 
 document.querySelector('.guess').value = 23;
 console.log(document.querySelector('.guess').value);
-
-
 */
 
-
 /**
- * Utils function to generate a random number
+ * Utils functions
  */
-function generateRandomNumber(min, max){
- const randomNumber =  Math.round(Math.random() * 1000 ) % max
+const generateRandomNumber = (min, max) => {
+  const randomNumber = Math.round(Math.random() * 1000) % max;
 
- if (randomNumber < min) return min + randomNumber
+  if (randomNumber < min) return min + randomNumber;
 
- return randomNumber
-}
+  return randomNumber;
+};
 
-let secretNumber = generateRandomNumber(1, 20)
-let score = 20;
-let highscore = 0;
-
-console.log({ secretNumber });
-
-const displayMessage = function (message) {
+const displayMessage = message => {
   document.querySelector('.message').textContent = message;
 };
+
+const getInitialTrailsLeft = () => Math.round(MAX / 3)
+
+const MIN = 1;
+const MAX = 20;
+
+let secretNumber = generateRandomNumber(MIN, MAX);
+let trailsLeft = getInitialTrailsLeft()
+let highscore = 0;
+
+const scoreHolder = document.querySelector('.trails-left-number')
+scoreHolder.textContent = trailsLeft;
+
 
 document.querySelector('.check').addEventListener('click', function () {
   const guess = Number(document.querySelector('.guess').value);
@@ -52,19 +56,19 @@ document.querySelector('.check').addEventListener('click', function () {
 
     document.querySelector('.number').style.width = '30rem';
 
-    if (score > highscore) {
-      highscore = score;
+    if (trailsLeft > highscore) {
+      highscore = trailsLeft;
       document.querySelector('.highscore').textContent = highscore;
     }
 
     //WHen guess is wrong
   } else if (!guess !== secretNumber) {
-    if (score > 1) {
+    if (trailsLeft > 1) {
       // document.querySelector('.message').textContent = guess > secretNumber ? 'Too high!' : 'Too high!';
 
       displayMessage(guess > secretNumber ? 'Too high!' : 'Too low!');
-      score--;
-      document.querySelector('.score').textContent = score;
+      trailsLeft--;
+      document.querySelector('.score').textContent = trailsLeft;
     } else {
       document.querySelector('.message').textContent = 'You lost the game!';
     }
@@ -91,12 +95,11 @@ document.querySelector('.check').addEventListener('click', function () {
 // });
 
 document.querySelector('.again').addEventListener('click', function () {
-  score = 20;
-  secretNumber = generateRandomNumber(1, 20)
+  secretNumber = generateRandomNumber(MIN, MAX);
 
   document.querySelector('.message').textContent = 'Start guessing...';
   // displayMessage('Start guessing...');
-  document.querySelector('.score').textContent = score;
+  document.querySelector('.trails-left-number').innerHTML = getInitialTrailsLeft()
   document.querySelector('.number').textContent = '?';
   document.querySelector('.guess').value = '';
 
