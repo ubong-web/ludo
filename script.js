@@ -12,9 +12,23 @@ console.log(document.querySelector('.guess').value);
 
 */
 
-const secretNumber = Math.trunc(Math.random() * 20) + 1;
+
+/**
+ * Utils function to generate a random number
+ */
+function generateRandomNumber(min, max){
+ const randomNumber =  Math.round(Math.random() * 1000 ) % max
+
+ if (randomNumber < min) return min + randomNumber
+
+ return randomNumber
+}
+
+let secretNumber = generateRandomNumber(1, 20)
 let score = 20;
 let highscore = 0;
+
+console.log({ secretNumber });
 
 const displayMessage = function (message) {
   document.querySelector('.message').textContent = message;
@@ -78,7 +92,7 @@ document.querySelector('.check').addEventListener('click', function () {
 
 document.querySelector('.again').addEventListener('click', function () {
   score = 20;
-  let secretNumber = Math.trunc(Math.random() * 20) + 1;
+  secretNumber = generateRandomNumber(1, 20)
 
   document.querySelector('.message').textContent = 'Start guessing...';
   // displayMessage('Start guessing...');
